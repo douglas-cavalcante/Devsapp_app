@@ -7,7 +7,7 @@ import ReduxThunk from 'redux-thunk';
 import Reducers from './src/Reducers';
 import PreloadScreen from './src/PreloadScreen';
 import HomeScreen from './src/HomeScreen';
-import ConversationsScreen from './src/ConversationsScreen';
+import ConversationsScreen from './src/Conversations';
 import SignUpScreen from './src/SignUpScreen';
 import SignInScreen from './src/SignInScreen';
 
@@ -17,7 +17,10 @@ let store = createStore(Reducers, applyMiddleware(ReduxThunk));
 //Criação da navegação
 const AppNavigator = StackNavigator({
   Conversations: {
-    screen: ConversationsScreen
+    screen: ConversationsScreen,
+    navigationOptions:{
+      header: null,
+    }
   },
   Preload: {
     screen: PreloadScreen

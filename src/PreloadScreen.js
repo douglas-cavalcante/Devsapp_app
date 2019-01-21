@@ -55,7 +55,7 @@ export class PreloadScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>{this.props.status}</Text>
+        <Text>Carregando</Text>
       </View>
     );
   }
@@ -63,7 +63,10 @@ export class PreloadScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 
