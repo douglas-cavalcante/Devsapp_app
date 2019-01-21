@@ -1,36 +1,46 @@
 import React, { Component } from 'react';
-import { createAppContainer, createStackNavigator } from 'react-navigation';
+import { StackNavigator } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 
 import Reducers from './src/Reducers';
 import PreloadScreen from './src/PreloadScreen';
-import { HomeScreen } from './src/HomeScreen';
-import { ConversationsScreen } from './src/ConversationsScreen';
+import HomeScreen from './src/HomeScreen';
+import ConversationsScreen from './src/ConversationsScreen';
+import SignUpScreen from './src/SignUpScreen';
+import SignInScreen from './src/SignInScreen';
 
 //Criação da store - recebe os reducers e o middleware
 let store = createStore(Reducers, applyMiddleware(ReduxThunk));
 
 //Criação da navegação
-const AppNavigator = createStackNavigator({
+const AppNavigator = StackNavigator({
+  Conversations: {
+    screen: ConversationsScreen
+  },
   Preload: {
     screen: PreloadScreen
   },
-  Home:{
+  Home: {
     screen: HomeScreen
   },
-  ConversationsScreen:{
-    screen: ConversationsScreen
-  }
-});
-const AppContainer = createAppContainer(AppNavigator);
+  SignUp: {
+    screen: SignUpScreen
+  },
+  SignIn: {
+    screen: SignInScreen
+  },
+}, {
+    initialRouteName: 'Preload'
+  });
+
 
 export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <AppContainer />
+        <AppNavigator />
       </Provider>
     )
   }

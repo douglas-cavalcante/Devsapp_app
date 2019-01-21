@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { checkLogin } from './actions/AuthActions';
 
+
 export class ConversationsScreen extends Component {
 
   static navigationOptions = {

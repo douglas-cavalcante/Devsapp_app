@@ -25,7 +25,7 @@ export class PreloadScreen extends Component {
         this.props.navigation.dispatch(StackActions.reset({
           index: 0,
           actions: [
-            NavigationActions.navigate({ routeName: 'ConversationsScreen', })
+            NavigationActions.navigate({ routeName: 'Conversations', })
           ]
         }));
         break;
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     status: state.auth.status,
+    email: state.auth.email
   };
 };
 
