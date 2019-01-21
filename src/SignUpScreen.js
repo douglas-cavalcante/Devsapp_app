@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { changeName, changeEmail, changePassword, signUp } from './actions/AuthActions';
 
@@ -12,6 +12,13 @@ export class SignUpScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  componentDidUpdate() {
+    if (this.props.status == 1) {
+      Keyboard.dismiss();
+      this.props.navigation.navigate('Conversations');
+    }
   }
 
   render() {
@@ -51,7 +58,8 @@ const mapStateToProps = (state) => {
   return {
     name: state.auth.name,
     email: state.auth.email,
-    password: state.auth.password
+    password: state.auth.password,
+    status: state.password.status
   };
 };
 

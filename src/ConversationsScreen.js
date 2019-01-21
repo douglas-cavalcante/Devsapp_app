@@ -19,7 +19,7 @@ export class ConversationsScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>conversas</Text>
+        <Text>conversas 11</Text>
       </View>
     );
   }

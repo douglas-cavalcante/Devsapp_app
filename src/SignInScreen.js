@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { changeEmail, changePassword, signIn } from './actions/AuthActions';
 
@@ -14,11 +14,19 @@ export class SignInScreen extends Component {
     this.state = {};
   }
 
+  componentDidUpdate() {
+    if (this.props.status == 1) {
+      Keyboard.dismiss();
+      this.props.navigation.navigate('Conversations');
+    }
+  }
+
   render() {
     const { email, password, changeEmail, changePassword, signIn } = this.props;
     return (
       <View style={styles.container}>
         <Text>{this.props.uid}</Text>
+        <Text>{this.props.status}</Text>
         <Text>Digite seu Email:</Text>
         <TextInput style={styles.input} value={email} onChangeText={changeEmail} />
         <Text>Digite sua senha:</Text>
@@ -50,7 +58,8 @@ const mapStateToProps = (state) => {
   return {
     email: state.auth.email,
     password: state.auth.password,
-    uid: state.auth.uid
+    uid: state.auth.uid,
+    status: state.auth.status
   };
 };
 
