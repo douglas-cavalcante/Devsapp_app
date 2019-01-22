@@ -6,6 +6,7 @@ import ContactItem from '../components/contactsList/ContactItem';
 
 export class ContactsListScreen extends Component {
 
+  
   constructor(props) {
     super(props);
     this.state = {};
@@ -15,6 +16,7 @@ export class ContactsListScreen extends Component {
 
   handleClickContact = (item) => {
     this.props.createChat(this.props.uid, item.key);
+    
   }
 
   componentDidMount() {

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { createBottomTabNavigator } from 'react-navigation';
 
-import ConversationsListScreen from '../screens/ConversationsListScreen';
+import ConversationsStack from '../screens/ConversationsStack';
 import ContactsListScreen from '../screens/ContactsListScreen';
 import ConfigScreen from '../screens/ConfigScreen';
 
 const ConversationNavigator = createBottomTabNavigator({
   ConversationsList: {
-    screen: ConversationsListScreen,
+    screen: ConversationsStack,
     navigationOptions: {
       tabBarLabel: "Conversas"
     }

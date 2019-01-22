@@ -11,6 +11,8 @@ const ChatReducer = (state = initialState, action) => {
     case 'setContactsList':
       return { ...state, contacts: action.payload.users }
 
+    case 'setActiveChat':
+    return { ...state, activeChat: action.payload.chatId }
 
     default:
       return state;

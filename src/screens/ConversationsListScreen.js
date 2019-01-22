@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 export class ConversationsListScreen extends Component {
@@ -9,10 +9,17 @@ export class ConversationsListScreen extends Component {
     this.state = {};
   }
 
+  componentDidUpdate() {
+    if (this.props.activeChat != '') {
+      this.props.navigation.navigate('PrivateConversation');
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Text>conversas {this.props.uid}</Text>
+        <Button title="ir" onPress={() => this.props.navigation.navigate("PrivateConversation")} />
       </View>
     );
   }
@@ -28,6 +35,7 @@ const mapStateToProps = (state) => {
   return {
     status: state.auth.status,
     uid: state.auth.uid,
+    activeChat: state.chat.activeChat,
   };
 };
 
