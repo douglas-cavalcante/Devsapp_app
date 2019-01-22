@@ -1,6 +1,7 @@
 const initialState = {
   chats: [],
   contacts: [],
+  activeChat: '',
 }
 
 const ChatReducer = (state = initialState, action) => {

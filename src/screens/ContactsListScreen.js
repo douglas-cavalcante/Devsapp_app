@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { getContactsList } from '../actions/ChatActions';
+import { getContactsList, createChat } from '../actions/ChatActions';
 import ContactItem from '../components/contactsList/ContactItem';
 
 export class ContactsListScreen extends Component {
@@ -9,14 +9,17 @@ export class ContactsListScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.props.getContactsList();
+
   }
 
 
-  handleClickContact = () => {
-    alert("clicou")
+  handleClickContact = (item) => {
+    this.props.createChat(this.props.uid, item.key);
   }
 
+  componentDidMount() {
+    this.props.getContactsList(this.props.uid);
+  }
 
   render() {
 
@@ -40,11 +43,11 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    status: state.auth.status,
+    uid: state.auth.uid,
     contacts: state.chat.contacts,
   };
 };
 
 
-const ContactsListScreenConnect = connect(mapStateToProps, { getContactsList })(ContactsListScreen);
+const ContactsListScreenConnect = connect(mapStateToProps, { getContactsList, createChat })(ContactsListScreen);
 export default ContactsListScreenConnect;

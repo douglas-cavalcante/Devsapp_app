@@ -9,7 +9,7 @@ export default class ContactItem extends Component {
 
 
   handleClickArea = () => {
-    this.props.onPress();
+    this.props.onPress(this.props.data);
   }
 
 
