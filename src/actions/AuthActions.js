@@ -1,5 +1,15 @@
 import firebase from "../firebaseConnection";
 
+export const signOut = () => {
+  firebase.auth().signOut();
+  return {
+    type: 'changeStatus',
+    payload: {
+      status: 2,
+    }
+  }
+}
+
 export const checkLogin = () => {
   return (dispatch) => {
     //Vai esperar o resultado
@@ -60,7 +70,6 @@ export const signUp = (name, email, password) => {
 }
 
 export const signIn = (email, password) => {
-  alert(email + password)
   return (dispatch) => {
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then((user) => {

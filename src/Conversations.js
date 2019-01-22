@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { createBottomTabNavigator } from 'react-navigation';
 
 import ConversationsListScreen from './ConversationsListScreen';
-import ContactsListScreee from './ContactsList';
+import ContactsListScreen from './ContactsListScreen';
 import ConfigScreen from './ConfigScreen';
 
 const ConversationNavigator = createBottomTabNavigator({
@@ -13,7 +13,7 @@ const ConversationNavigator = createBottomTabNavigator({
     }
   },
   ContactsList: {
-    screen: ContactsListScreee,
+    screen: ContactsListScreen,
     navigationOptions: {
       tabBarLabel: "Contatos"
     }
