@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { createBottomTabNavigator } from 'react-navigation';
 
-import ConversationsListScreen from './ConversationsListScreen';
-import ContactsListScreen from './ContactsListScreen';
-import ConfigScreen from './ConfigScreen';
+import ConversationsListScreen from '../screens/ConversationsListScreen';
+import ContactsListScreen from '../screens/ContactsListScreen';
+import ConfigScreen from '../screens/ConfigScreen';
 
 const ConversationNavigator = createBottomTabNavigator({
   ConversationsList: {

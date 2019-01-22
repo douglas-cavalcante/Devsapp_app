@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-import {connect} from 'react-redux';
-import { getContactsList } from './actions/ChatActions';
+import { connect } from 'react-redux';
+import { getContactsList } from '../actions/ChatActions';
+import ContactItem from '../components/contactsList/ContactItem';
 
 export class ContactsListScreen extends Component {
 
@@ -11,14 +12,19 @@ export class ContactsListScreen extends Component {
     this.props.getContactsList();
   }
 
+
+  handleClickContact = () => {
+    alert("clicou")
+  }
+
+
   render() {
 
     return (
       <View style={styles.container}>
-      <Text>contatos</Text>
         <FlatList
           data={this.props.contacts}
-          renderItem={({item}) => { return <Text>{item.name}</Text> }}
+          renderItem={({ item }) => { return <ContactItem data={item} onPress={this.handleClickContact} /> }}
         />
       </View>
     );

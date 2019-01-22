@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
-import { changeEmail, changePassword, signIn } from './actions/AuthActions';
+import { changeName, changeEmail, changePassword, signUp } from '../actions/AuthActions';
 
-export class SignInScreen extends Component {
+export class SignUpScreen extends Component {
 
   static navigationOptions = {
-    title: 'Login',
+    title: 'Cadastrar',
   }
 
   constructor(props) {
@@ -22,16 +22,16 @@ export class SignInScreen extends Component {
   }
 
   render() {
-    const { email, password, changeEmail, changePassword, signIn } = this.props;
+    const { name, email, password, changeName, changeEmail, changePassword } = this.props;
     return (
       <View style={styles.container}>
-        <Text>{this.props.uid}</Text>
-        <Text>{this.props.status}</Text>
+        <Text>Digite seu Nome:</Text>
+        <TextInput style={styles.input} value={name} onChangeText={changeName} />
         <Text>Digite seu Email:</Text>
         <TextInput style={styles.input} value={email} onChangeText={changeEmail} />
         <Text>Digite sua senha:</Text>
         <TextInput secureTextEntry={true} style={styles.input} value={password} onChangeText={changePassword} />
-        <Button title="Entrar" onPress={() => signIn(email, password)} />
+        <Button title="Cadastrar" onPress={() => this.props.signUp(name, email, password)} />
       </View>
     );
   }
@@ -56,12 +56,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
+    name: state.auth.name,
     email: state.auth.email,
     password: state.auth.password,
-    uid: state.auth.uid,
     status: state.auth.status
   };
 };
 
-const SignInConnect = connect(mapStateToProps, { changeEmail, changePassword, signIn })(SignInScreen);
-export default SignInConnect;
+const SignUpConnect = connect(mapStateToProps, { changeName, changeEmail, changePassword, signUp })(SignUpScreen);
+export default SignUpConnect;
