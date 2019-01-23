@@ -6,7 +6,7 @@ import { changeName, changeEmail, changePassword, signUp } from '../actions/Auth
 export class SignUpScreen extends Component {
 
   static navigationOptions = {
-    title: 'Cadastrar',
+    title: 'Cadastro',
   }
 
   constructor(props) {
@@ -16,6 +16,7 @@ export class SignUpScreen extends Component {
 
   componentDidUpdate() {
     if (this.props.status == 1) {
+      //Redireciona o usuário para o cadastro quando o status se torna 1 
       Keyboard.dismiss();
       this.props.navigation.navigate('Conversations');
     }
@@ -51,7 +52,6 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#DDDDDD'
   }
-
 });
 
 const mapStateToProps = (state) => {

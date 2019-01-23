@@ -37,7 +37,6 @@ const ConversationNavigator = createBottomTabNavigator({
         backgroundColor: '#00BFFF',
       },
     },
-
   }
 );
 

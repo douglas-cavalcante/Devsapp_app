@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, FlatList } from 'react-native';
 import { connect } from 'react-redux';
+import { getChatsList, setActiveChat } from '../actions/ChatActions';
+import ConversationsItem from '../components/conversationsList/ConversationsItem';
 
 export class ConversationsListScreen extends Component {
 
@@ -15,11 +17,21 @@ export class ConversationsListScreen extends Component {
     }
   }
 
+  componentDidMount() {
+    this.props.getChatsList(this.props.uid);
+  }
+
+  handleClickConversation = (data) => {
+    this.props.setActiveChat(data.key);
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text>conversas {this.props.uid}</Text>
-        <Button title="ir" onPress={() => this.props.navigation.navigate("PrivateConversation")} />
+        <FlatList
+          data={this.props.chats}
+          renderItem={({ item }) => { return <ConversationsItem data={item} onPress={this.handleClickConversation} /> }}
+        />
       </View>
     );
   }
@@ -36,9 +48,10 @@ const mapStateToProps = (state) => {
     status: state.auth.status,
     uid: state.auth.uid,
     activeChat: state.chat.activeChat,
+    chats: state.chat.chats,
   };
 };
 
 
-const ConversationsListConnect = connect(mapStateToProps)(ConversationsListScreen);
+const ConversationsListConnect = connect(mapStateToProps, { getChatsList, setActiveChat })(ConversationsListScreen);
 export default ConversationsListConnect;

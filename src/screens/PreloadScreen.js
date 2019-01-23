@@ -17,15 +17,13 @@ export class PreloadScreen extends Component {
     this.props.checkLogin();
   }
 
-
-
   redirectPages = () => {
     switch (this.props.status) {
       case 1:
         this.props.navigation.dispatch(StackActions.reset({
           index: 0,
           actions: [
-            NavigationActions.navigate({ routeName: 'Conversations', })
+            NavigationActions.navigate({ routeName: 'Conversations', }),
           ]
         }));
         break;
@@ -33,7 +31,7 @@ export class PreloadScreen extends Component {
         this.props.navigation.dispatch(StackActions.reset({
           index: 0,
           actions: [
-            NavigationActions.navigate({ routeName: 'Home', })
+            NavigationActions.navigate({ routeName: 'Home', }),
           ]
         }));
         break;
@@ -55,7 +53,7 @@ export class PreloadScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Carregando</Text>
+        <Text>Carregando .... </Text>
       </View>
     );
   }
@@ -67,6 +65,10 @@ const styles = StyleSheet.create({
     margin: 10,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  loadingText:{
+    fontSize: 26,
+    fontWeight: 'bold',
   }
 });
 

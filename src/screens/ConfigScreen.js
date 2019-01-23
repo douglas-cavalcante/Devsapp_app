@@ -25,7 +25,7 @@ export class ConfigScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Configurações2</Text>
+        <Text>Configurações</Text>
         <Button title="Sair" onPress={this.logout} />
       </View>
     );
@@ -35,11 +35,9 @@ export class ConfigScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    margin: 50,
   }
 });
-
-
 
 const mapStateToProps = (state) => {
   return {

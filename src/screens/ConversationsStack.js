@@ -7,13 +7,13 @@ import PrivateConversationScreen from './PrivateConversationScreen';
 const ConversationsStackNavigator = StackNavigator({
   ConversationsList: {
     screen: ConversationsListScreen,
-    navigationOptions:{
-      header: null
+    navigationOptions: {
+      title: "conversas"
     }
   },
   PrivateConversation: {
     screen: PrivateConversationScreen,
-    navigationOptions:{
+    navigationOptions: {
       title: "privado"
     }
   }

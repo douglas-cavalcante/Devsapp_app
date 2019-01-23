@@ -3,8 +3,8 @@
 // 1 - Logado
 // 2 - Não logado
 const initialState = {
-  name: 'maria',
-  email: 'teste@gmail.com',
+  name: '',
+  email: '',
   password: '',
   status: 0,
   uid: ''

@@ -6,13 +6,11 @@ import ContactItem from '../components/contactsList/ContactItem';
 
 export class ContactsListScreen extends Component {
 
-  
   constructor(props) {
     super(props);
     this.state = {};
 
   }
-
 
   handleClickContact = (item) => {
     this.props.createChat(this.props.uid, item.key);
@@ -42,14 +40,12 @@ const styles = StyleSheet.create({
   }
 });
 
-
 const mapStateToProps = (state) => {
   return {
     uid: state.auth.uid,
     contacts: state.chat.contacts,
   };
 };
-
 
 const ContactsListScreenConnect = connect(mapStateToProps, { getContactsList, createChat })(ContactsListScreen);
 export default ContactsListScreenConnect;

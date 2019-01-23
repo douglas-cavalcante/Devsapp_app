@@ -25,8 +25,6 @@ export class SignInScreen extends Component {
     const { email, password, changeEmail, changePassword, signIn } = this.props;
     return (
       <View style={styles.container}>
-        <Text>{this.props.uid}</Text>
-        <Text>{this.props.status}</Text>
         <Text>Digite seu Email:</Text>
         <TextInput style={styles.input} value={email} onChangeText={changeEmail} />
         <Text>Digite sua senha:</Text>
@@ -51,7 +49,6 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#DDDDDD'
   }
-
 });
 
 const mapStateToProps = (state) => {
