@@ -15,6 +15,7 @@ export class PreloadScreen extends Component {
     super(props);
     this.state = {};
     this.props.checkLogin();
+    window.globalNavigator = this.props.navigation;
   }
 
   redirectPages = () => {

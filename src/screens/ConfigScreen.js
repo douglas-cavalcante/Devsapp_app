@@ -13,14 +13,19 @@ export class ConfigScreen extends Component {
 
   logout = () => {
     this.props.signOut();
+
+    window.globalNavigator.navigate('Home');
+
+    // Como manter o comportamente
+    /*
     this.props.navigation.dispatch(StackActions.reset({
       index: 0,
       actions: [
         NavigationActions.navigate({ routeName: 'Home', })
       ]
     }));
+    */
   }
-
 
   render() {
     return (

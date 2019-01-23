@@ -11,7 +11,7 @@ export class PrivateConversationScreen extends Component {
   }
 
   static navigationOptions = ({ navigation }) => ({
-    title: "Privado",
+    title: navigation.getParam('title','Chat Privado'),
     headerLeft: (
       <TouchableHighlight underlayColor="white" onPress={navigation.getParam('voltar')}>
         <Image source={require('../../assets/images/back.png')} style={styles.iconBack} />

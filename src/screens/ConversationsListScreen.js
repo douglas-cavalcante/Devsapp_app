@@ -13,7 +13,7 @@ export class ConversationsListScreen extends Component {
 
   componentDidUpdate() {
     if (this.props.activeChat != '') {
-      this.props.navigation.navigate('PrivateConversation');
+      this.props.navigation.navigate('PrivateConversation', { title: this.props.activeChatTitle });
     }
   }
 
@@ -49,6 +49,7 @@ const mapStateToProps = (state) => {
     uid: state.auth.uid,
     activeChat: state.chat.activeChat,
     chats: state.chat.chats,
+    activeChatTitle: state.chat.activeChatTitle
   };
 };
 
