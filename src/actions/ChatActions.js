@@ -31,6 +31,7 @@ export const getChatsList = (userUid) => {
       snapshot.forEach((childItem) => {
         chats.push({
           key: childItem.key,
+          title: childItem.val().title,
         });
       });
       dispatch({
@@ -57,12 +58,19 @@ export const createChat = (userSender, userRecipient) => {
     //Associando aos envolvidos
     let chatId = newChat.key;
 
-    firebase.database().ref('users').child(userSender).child('chats').child(chatId).set({
-      id: chatId,
+    //criando referencia e recuperando o nome do user
+    firebase.database().ref('users').child(userRecipient).once('value').then((snapshot) => {
+      firebase.database().ref('users').child(userSender).child('chats').child(chatId).set({
+        id: chatId,
+        title: snapshot.val().name,
+      });
     });
 
-    firebase.database().ref('users').child(userRecipient).child('chats').child(chatId).set({
-      id: chatId,
+    firebase.database().ref('users').child(userSender).once('value').then((snapshot) => {
+      firebase.database().ref('users').child(userRecipient).child('chats').child(chatId).set({
+        id: chatId,
+        title: snapshot.val().name,
+      });
     });
 
     dispatch({
