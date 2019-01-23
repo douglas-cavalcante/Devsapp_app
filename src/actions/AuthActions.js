@@ -92,10 +92,11 @@ export const signIn = (email, password) => {
           case 'auth/user-not-found':
             alert('Usuário não existe');
             break;
-          case 'wrong/password':
+          case 'auth/wrong-password':
             alert('Email e/ou senha errados!!!');
             break;
           default:
+          alert(error.code)
             break;
         }
       });
