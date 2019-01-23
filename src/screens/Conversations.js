@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createBottomTabNavigator } from 'react-navigation';
+import { createAppContainer, createBottomTabNavigator } from 'react-navigation';
 
 import ConversationsStack from '../screens/ConversationsStack';
 import ContactsListScreen from '../screens/ContactsListScreen';
@@ -40,4 +40,6 @@ const ConversationNavigator = createBottomTabNavigator({
   }
 );
 
-export default ConversationNavigator
+const AppContainer = createAppContainer(ConversationNavigator);
+
+export default AppContainer

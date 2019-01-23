@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { StackNavigator } from 'react-navigation';
-
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 import ConversationsListScreen from './ConversationsListScreen';
 import PrivateConversationScreen from './PrivateConversationScreen';
 
-const ConversationsStackNavigator = StackNavigator({
+const ConversationsStackNavigator = createStackNavigator({
   ConversationsList: {
     screen: ConversationsListScreen,
     navigationOptions: {
@@ -13,13 +12,12 @@ const ConversationsStackNavigator = StackNavigator({
   },
   PrivateConversation: {
     screen: PrivateConversationScreen,
-    navigationOptions: {
-      title: "privado"
-    }
   }
 }, {
     initialRouteName: "ConversationsList",
   }
 );
 
-export default ConversationsStackNavigator;
+const AppContainer = createAppContainer(ConversationsStackNavigator);
+
+export default AppContainer;
