@@ -22,6 +22,28 @@ export const getContactsList = (userUid) => {
   }
 }
 
+
+export const getChatsList = (userUid) => {
+  return (dispatch) => {
+    firebase.database().ref('users').child(userUid).child('chats').on('value', (snapshot) => {
+      let chats = [];
+
+      snapshot.forEach((childItem) => {
+        chats.push({
+          key: childItem.key,
+        });
+      });
+      dispatch({
+        type: 'setChatsList',
+        payload: {
+          chats: chats,
+        },
+      });
+    });
+  };
+};
+
+
 export const createChat = (userSender, userRecipient) => {
   return (dispatch) => {
     //Criando o chat
@@ -36,20 +58,27 @@ export const createChat = (userSender, userRecipient) => {
     let chatId = newChat.key;
 
     firebase.database().ref('users').child(userSender).child('chats').child(chatId).set({
-      id:chatId,
+      id: chatId,
     });
 
-
     firebase.database().ref('users').child(userRecipient).child('chats').child(chatId).set({
-      id:chatId,
+      id: chatId,
     });
 
     dispatch({
-      type:'setActiveChat',
-      payload:{
+      type: 'setActiveChat',
+      payload: {
         chatId: chatId
       }
     });
+  }
+}
 
+export const setActiveChat = (chatId) => {
+  return {
+    type: 'setActiveChat',
+    payload: {
+      chatId: chatId
+    }
   }
 }
