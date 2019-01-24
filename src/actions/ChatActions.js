@@ -22,7 +22,6 @@ export const getContactsList = (userUid) => {
   }
 }
 
-
 export const getChatsList = (userUid) => {
   return (dispatch) => {
     firebase.database().ref('users').child(userUid).child('chats').on('value', (snapshot) => {
@@ -43,7 +42,6 @@ export const getChatsList = (userUid) => {
     });
   };
 };
-
 
 export const createChat = (userSender, userRecipient) => {
   return (dispatch) => {
@@ -70,14 +68,15 @@ export const createChat = (userSender, userRecipient) => {
       firebase.database().ref('users').child(userRecipient).child('chats').child(chatId).set({
         id: chatId,
         title: snapshot.val().name,
-      });
-    });
-
-    dispatch({
-      type: 'setActiveChat',
-      payload: {
-        chatId: chatId
-      }
+      })
+        .then(() => {
+          dispatch({
+            type: 'setActiveChat',
+            payload: {
+              chatId: chatId
+            }
+          });
+        })
     });
   }
 }
@@ -90,3 +89,48 @@ export const setActiveChat = (chatId) => {
     }
   }
 }
+
+export const sendMessage = (txt, author, activeChat) => {
+  return (_dispatch) => {
+    let currentDate = '';
+    let cDate = new Date();
+    currentDate = cDate.getFullYear() + '-' + (cDate.getMonth() + 1) + '-' + cDate.getDate();
+    currentDate += ' ';
+    currentDate += cDate.getHours() + ':' + cDate.getMinutes() + ':' + cDate.getSeconds();
+    let messageId = firebase.database().ref('chats').child(activeChat).child('messages').push();
+    messageId.set({
+      date: currentDate,
+      m: txt,
+      uid: author
+    });
+    console.log("entrei")
+  }
+}
+
+export const monitorChat = (activeChat) => {
+  return (dispatch) => {
+    firebase.database().ref('chats').child(activeChat).child('messages').on('value', (snapshot) => {
+      let Msgs = [];
+      snapshot.forEach((childItem) => {
+        Msgs.push({
+          key: childItem.key,
+          date: childItem.val().date,
+          m: childItem.val().m,
+          uid: childItem.val().uid
+        });
+      });
+      dispatch({
+        type: 'setActiveChatMessages',
+        payload: {
+          messages: Msgs,
+        }
+      });
+    });
+  }
+}
+
+export const monitorChatOff = (activeChat) => {
+  return (dispatch) => {
+    firebase.database().ref('chats').child(activeChat).child('messages').off();
+  };
+};

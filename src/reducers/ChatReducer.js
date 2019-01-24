@@ -2,13 +2,22 @@ const initialState = {
   chats: [],
   contacts: [],
   activeChat: '',
-  activeChatTitle: ''
+  activeChatTitle: '',
+  activeChatMessages: []
 }
 
 const ChatReducer = (state = initialState, action) => {
   switch (action.type) {
+    
     case 'setContactsList':
       return { ...state, contacts: action.payload.users }
+
+    case 'setActiveChatMessages':
+      return { ...state, activeChatMessages: action.payload.messages }
+
+    case 'setChatsList':
+      return { ...state, chats: action.payload.chats }
+
     case 'setActiveChat':
       let chatTitle = '';
       for (let i in state.chats) {
@@ -16,10 +25,8 @@ const ChatReducer = (state = initialState, action) => {
           chatTitle = state.chats[i].title;
         }
       }
-      alert(chatTitle)
       return { ...state, activeChat: action.payload.chatId, activeChatTitle: chatTitle }
-    case 'setChatsList':
-      return { ...state, chats: action.payload.chats }
+
     default:
       return state;
   }
