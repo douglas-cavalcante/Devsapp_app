@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { signOut } from "../actions/AuthActions";
+import NavigationService from '../screens/NavigationService';
 
 export class ConfigScreen extends Component {
 
@@ -13,18 +14,8 @@ export class ConfigScreen extends Component {
 
   logout = () => {
     this.props.signOut();
-
-    window.globalNavigator.navigate('Home');
-
     // Como manter o comportamente
-    /*
-    this.props.navigation.dispatch(StackActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({ routeName: 'Home', })
-      ]
-    }));
-    */
+    NavigationService.navigate('Home',{});
   }
 
   render() {

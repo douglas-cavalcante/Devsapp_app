@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
+import NavigationService from './src/screens/NavigationService';
+
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
@@ -39,13 +41,17 @@ const AppNavigator = createStackNavigator({
     initialRouteName: 'Preload'
   });
 
-  const AppContainer = createAppContainer(AppNavigator);
+const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <AppContainer />
+        <AppContainer
+          ref={navigatorRef => {
+            NavigationService.setTopLevelNavigator(navigatorRef);
+          }}
+        />
       </Provider>
     )
   }
