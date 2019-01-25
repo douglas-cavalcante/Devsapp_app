@@ -18,9 +18,7 @@ const ConversationsStackNavigator = createStackNavigator({
   }
 );
 
-
 const AppContainer = createAppContainer(ConversationsStackNavigator);
-
 
 AppContainer.navigationOptions = ({ navigation }) => {
   let tabBarVisible = true;

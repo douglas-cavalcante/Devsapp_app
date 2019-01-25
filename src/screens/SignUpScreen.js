@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { changeName, changeEmail, changePassword, signUp } from '../actions/AuthActions';
+import LoadingItem from '../components/LoadingItem';
 
 export class SignUpScreen extends Component {
 
@@ -11,7 +12,9 @@ export class SignUpScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      loading: false,
+    };
   }
 
   componentDidUpdate() {
@@ -20,6 +23,12 @@ export class SignUpScreen extends Component {
       Keyboard.dismiss();
       this.props.navigation.navigate('Conversations');
     }
+  }
+
+  handleOnPress = () => {
+    const { name, email, password} = this.props;
+    this.setState({ loading: true });
+    this.props.signUp(name, email, password, () => this.setState({ loading: false }));
   }
 
   render() {
@@ -32,7 +41,8 @@ export class SignUpScreen extends Component {
         <TextInput style={styles.input} value={email} onChangeText={changeEmail} />
         <Text>Digite sua senha:</Text>
         <TextInput secureTextEntry={true} style={styles.input} value={password} onChangeText={changePassword} />
-        <Button title="Cadastrar" onPress={() => this.props.signUp(name, email, password)} />
+        <Button title="Cadastrar" onPress={this.handleOnPress} />
+        <LoadingItem visible={this.state.loading} />
       </View>
     );
   }

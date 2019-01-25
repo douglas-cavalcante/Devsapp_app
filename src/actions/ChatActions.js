@@ -1,6 +1,6 @@
 import firebase from "../firebaseConnection";
 
-export const getContactsList = (userUid) => {
+export const getContactsList = (userUid, callback) => {
   return (dispatch) => {
     firebase.database().ref('users').orderByChild('name').once('value').then((snapshot) => {
       let users = [];
@@ -12,6 +12,7 @@ export const getContactsList = (userUid) => {
           });
         }
       });
+      callback();
       dispatch({
         type: 'setContactsList',
         payload: {
@@ -22,7 +23,7 @@ export const getContactsList = (userUid) => {
   }
 }
 
-export const getChatsList = (userUid) => {
+export const getChatsList = (userUid, callback) => {
   return (dispatch) => {
     firebase.database().ref('users').child(userUid).child('chats').on('value', (snapshot) => {
       let chats = [];
@@ -33,6 +34,7 @@ export const getChatsList = (userUid) => {
           title: childItem.val().title,
         });
       });
+      callback();
       dispatch({
         type: 'setChatsList',
         payload: {
@@ -103,7 +105,6 @@ export const sendMessage = (txt, author, activeChat) => {
       m: txt,
       uid: author
     });
-    console.log("entrei")
   }
 }
 

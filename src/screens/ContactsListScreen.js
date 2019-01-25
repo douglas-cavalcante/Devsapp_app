@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { getContactsList, createChat } from '../actions/ChatActions';
 import ContactItem from '../components/contactsList/ContactItem';
@@ -8,23 +8,26 @@ export class ContactsListScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      loading: true,
+    };
 
   }
 
   handleClickContact = (item) => {
     this.props.createChat(this.props.uid, item.key);
-    
+
   }
 
   componentDidMount() {
-    this.props.getContactsList(this.props.uid);
+    this.props.getContactsList(this.props.uid, () => this.setState({ loading: false }));
   }
 
   render() {
 
     return (
       <View style={styles.container}>
+        {this.state.loading && <ActivityIndicator size="large" />}
         <FlatList
           data={this.props.contacts}
           renderItem={({ item }) => { return <ContactItem data={item} onPress={this.handleClickContact} /> }}

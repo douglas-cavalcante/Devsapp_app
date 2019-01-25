@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, StyleSheet, FlatList } from 'react-native';
+import { View, Text, Button, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { getChatsList, setActiveChat } from '../actions/ChatActions';
 import ConversationsItem from '../components/conversationsList/ConversationsItem';
@@ -8,7 +8,9 @@ export class ConversationsListScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      loading: true,
+    };
   }
 
   componentDidUpdate() {
@@ -18,7 +20,7 @@ export class ConversationsListScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.getChatsList(this.props.uid);
+    this.props.getChatsList(this.props.uid, () => this.setState({ loading: false }));
   }
 
   handleClickConversation = (data) => {
@@ -28,6 +30,7 @@ export class ConversationsListScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+        {this.state.loading && <ActivityIndicator size="large" />}
         <FlatList
           data={this.props.chats}
           renderItem={({ item }) => { return <ConversationsItem data={item} onPress={this.handleClickConversation} /> }}

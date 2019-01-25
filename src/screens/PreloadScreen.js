@@ -16,6 +16,7 @@ export class PreloadScreen extends Component {
     this.state = {};
     this.props.checkLogin();
     window.globalNavigator = this.props.navigation;
+    
   }
 
   redirectPages = () => {
@@ -54,7 +55,7 @@ export class PreloadScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Carregando .... </Text>
+        <Text style={styles.loadingText}>Carregando .... </Text>
       </View>
     );
   }
