@@ -23,6 +23,21 @@ export const getContactsList = (userUid, callback) => {
   }
 }
 
+export const sendImage = (blob, callback) => {
+  return (_dispatch) => {
+    let tmpKey = firebase.database().ref('chats').push().key;
+    let fbImage = firebase.storage().ref().child('images').child(tmpKey);
+    fbImage.put(blob, { contentType: 'image/jpeg' })
+      .then(() => {
+        callback(tmpKey);
+      })
+      .catch((error) => {
+        alert(error.code);
+      });
+  }
+}
+
+
 export const getChatsList = (userUid, callback) => {
   return (dispatch) => {
     firebase.database().ref('users').child(userUid).child('chats').on('value', (snapshot) => {
@@ -92,7 +107,7 @@ export const setActiveChat = (chatId) => {
   }
 }
 
-export const sendMessage = (txt, author, activeChat) => {
+export const sendMessage = (messageType, messageContent, author, activeChat) => {
   return (_dispatch) => {
     let currentDate = '';
     let cDate = new Date();
@@ -100,11 +115,26 @@ export const sendMessage = (txt, author, activeChat) => {
     currentDate += ' ';
     currentDate += cDate.getHours() + ':' + cDate.getMinutes() + ':' + cDate.getSeconds();
     let messageId = firebase.database().ref('chats').child(activeChat).child('messages').push();
-    messageId.set({
-      date: currentDate,
-      m: txt,
-      uid: author
-    });
+
+    switch (messageType) {
+      case 'text':
+        messageId.set({
+          messageType: 'text',
+          date: currentDate,
+          m: messageContent,
+          uid: author
+        });
+        break;
+      case 'image':
+        messageId.set({
+          messageType: 'image',
+          date: currentDate,
+          imgSource: messageContent,
+          uid: author
+        });
+      default:
+        break;
+    }
   }
 }
 
@@ -113,12 +143,29 @@ export const monitorChat = (activeChat) => {
     firebase.database().ref('chats').child(activeChat).child('messages').on('value', (snapshot) => {
       let Msgs = [];
       snapshot.forEach((childItem) => {
-        Msgs.push({
-          key: childItem.key,
-          date: childItem.val().date,
-          m: childItem.val().m,
-          uid: childItem.val().uid
-        });
+        switch (childItem.val().messageType) {
+          case 'text':
+            Msgs.push({
+              key: childItem.key,
+              date: childItem.val().date,
+              messageType: childItem.val().messageType,
+              m: childItem.val().m,
+              uid: childItem.val().uid
+
+            });
+            break;
+          case 'image':
+            Msgs.push({
+              key: childItem.key,
+              date: childItem.val().date,
+              messageType: childItem.val().messageType,
+              imgSource: childItem.val().imgSource,
+              uid: childItem.val().uid
+            });
+            break;
+          default:
+            break;
+        }
       });
       dispatch({
         type: 'setActiveChatMessages',

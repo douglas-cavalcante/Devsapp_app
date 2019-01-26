@@ -22,12 +22,12 @@ export default class MessageItem extends Component {
       date: formattedDate(this.props.data.date),
     }
   }
-  
 
   render() {
     return (
       <View style={[styles.messageBox, { alignSelf: this.state.align, backgroundColor: this.state.bgColor }]}>
-        <Text style={{ textAlign: this.state.txtAlign }}>{this.props.data.m}</Text>
+        {this.props.data.messageType == 'text' && <Text style={{ textAlign: this.state.txtAlign }}>{this.props.data.m}</Text>}
+        {this.props.data.messageType == 'image' && <Text>Image</Text>}
         <Text style={styles.dateTxt}>{this.state.date}</Text>
       </View>
     )
