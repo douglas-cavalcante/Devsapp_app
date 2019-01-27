@@ -3,12 +3,13 @@ import firebase from "../firebaseConnection";
 export const signOut = () => {
   firebase.auth().signOut();
   return {
-    type: 'changeStatus',
+    type: 'resetState',
     payload: {
       status: 2,
     }
   }
 }
+
 
 export const checkLogin = () => {
   return (dispatch) => {

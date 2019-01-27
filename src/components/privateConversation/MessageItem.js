@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { TouchableHighlight, View, Text, StyleSheet, Image } from 'react-native';
 import { formattedDate } from '../../helpers';
 
 export default class MessageItem extends Component {
@@ -23,11 +23,19 @@ export default class MessageItem extends Component {
     }
   }
 
+  handleClickImage = () => {
+    this.props.onImagePress(this.props.data.imgSource);
+  }
+
   render() {
     return (
       <View style={[styles.messageBox, { alignSelf: this.state.align, backgroundColor: this.state.bgColor }]}>
         {this.props.data.messageType == 'text' && <Text style={{ textAlign: this.state.txtAlign }}>{this.props.data.m}</Text>}
-        {this.props.data.messageType == 'image' && <Text>Image</Text>}
+        {this.props.data.messageType == 'image' &&
+          <TouchableHighlight onPress={this.handleClickImage}>
+            <Image style={styles.img} source={{ uri: this.props.data.imgSource }} />
+          </TouchableHighlight>
+        }
         <Text style={styles.dateTxt}>{this.state.date}</Text>
       </View>
     )
@@ -48,6 +56,9 @@ const styles = StyleSheet.create({
   dateTxt: {
     fontSize: 11,
     textAlign: 'right'
-
+  },
+  img: {
+    width: 200,
+    height: 200,
   }
 });

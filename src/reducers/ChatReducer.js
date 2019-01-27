@@ -8,12 +8,15 @@ const initialState = {
 
 const ChatReducer = (state = initialState, action) => {
   switch (action.type) {
-    
+
     case 'setContactsList':
       return { ...state, contacts: action.payload.users }
 
     case 'setActiveChatMessages':
       return { ...state, activeChatMessages: action.payload.messages }
+
+    case 'resetInfo':
+      return { chats: [], contacts: [], activeChat: '', activeChatTitle: '', activeChatMessages: [] }
 
     case 'setChatsList':
       return { ...state, chats: action.payload.chats }

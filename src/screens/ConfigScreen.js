@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { signOut } from "../actions/AuthActions";
+import { resetInfo } from "../actions/ChatActions";
 import NavigationService from '../screens/NavigationService';
 
 export class ConfigScreen extends Component {
@@ -12,11 +13,20 @@ export class ConfigScreen extends Component {
     this.state = {};
   }
 
-  logout = () => {
-    this.props.signOut();
+  logout = async () => {
+    await this.props.resetInfo();
+    await this.props.signOut();
     // Como manter o comportamente
-    NavigationService.navigate('Home',{});
+    this.props.navigation.dispatch(StackActions.reset({
+      index: 0,
+      key: null,
+      actions: [
+        NavigationActions.navigate({ routeName: 'Home' }),
+      ]
+    }));
+
   }
+
 
   render() {
     return (
@@ -42,6 +52,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const ConfigConnect = connect(mapStateToProps, { signOut })(ConfigScreen);
+const ConfigConnect = connect(mapStateToProps, { signOut, resetInfo })(ConfigScreen);
 export default ConfigConnect;
 

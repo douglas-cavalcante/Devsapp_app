@@ -23,17 +23,35 @@ export const getContactsList = (userUid, callback) => {
   }
 }
 
-export const sendImage = (blob, callback) => {
+
+export const resetInfo = () => {
+  return (dispatch) => {
+    dispatch({
+      type: 'resetInfo',
+      payload: {
+      }
+    });
+  }
+}
+
+
+export const sendImage = (blob, progressCallback, sucessCallback) => {
   return (_dispatch) => {
     let tmpKey = firebase.database().ref('chats').push().key;
     let fbImage = firebase.storage().ref().child('images').child(tmpKey);
     fbImage.put(blob, { contentType: 'image/jpeg' })
-      .then(() => {
-        callback(tmpKey);
-      })
-      .catch((error) => {
-        alert(error.code);
-      });
+      .on(
+        'state_changed',
+        progressCallback,
+        (error) => {
+          alert(error.code);
+        },
+        () => {
+          fbImage.getDownloadURL().then((url) => {
+            sucessCallback(url);
+          });
+        }
+      )
   }
 }
 
@@ -47,6 +65,7 @@ export const getChatsList = (userUid, callback) => {
         chats.push({
           key: childItem.key,
           title: childItem.val().title,
+          other: childItem.val().other,
         });
       });
       callback();
@@ -78,6 +97,7 @@ export const createChat = (userSender, userRecipient) => {
       firebase.database().ref('users').child(userSender).child('chats').child(chatId).set({
         id: chatId,
         title: snapshot.val().name,
+        other: userRecipient,
       });
     });
 
@@ -85,6 +105,7 @@ export const createChat = (userSender, userRecipient) => {
       firebase.database().ref('users').child(userRecipient).child('chats').child(chatId).set({
         id: chatId,
         title: snapshot.val().name,
+        other: userSender
       })
         .then(() => {
           dispatch({

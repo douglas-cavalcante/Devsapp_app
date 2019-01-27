@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, Platform, KeyboardAvoidingView, TouchableHighlight, FlatList, Image, BackHandler } from 'react-native';
+import { Modal, View, Button, StyleSheet, TextInput, Platform, KeyboardAvoidingView, TouchableHighlight, FlatList, Image, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { setActiveChat, sendMessage, monitorChat, monitorChatOff, sendImage } from '../actions/ChatActions';
 import MessageItem from '../components/privateConversation/MessageItem';
@@ -16,7 +16,9 @@ export class PrivateConversationScreen extends Component {
     super(props);
     this.state = {
       message: '',
-      imgTmp: null
+      percentualUpload: 0,
+      modalVisible: false,
+      modalImage: null,
     };
   }
 
@@ -29,13 +31,27 @@ export class PrivateConversationScreen extends Component {
     ),
   });
 
+
+  handleModalShow = () => {
+    this.setState(state => ({
+      ...state,
+      modalVisible: !state.modalVisible,
+    }));
+  }
+
   backScreen = () => {
     this.props.monitorChatOff(this.props.activeChat);
-
     this.props.setActiveChat('');
     this.props.navigation.goBack();
-
     return true;
+  }
+
+
+  handleImagePress = (img) => {
+    this.setState(state => ({
+      ...state,
+      modalImage: img,
+    }), this.handleModalShow);
   }
 
   componentDidMount() {
@@ -68,9 +84,15 @@ export class PrivateConversationScreen extends Component {
             return RNFetchBlob.polyfill.Blob.build(data, { type: 'image/jpeg;BASE64' })
           })
           .then((blob) => {
-            this.props.sendImage(blob, (imgName) => {
-              this.props.sendMessage('image', imgName, this.props.uid, this.props.activeChat);
-            });
+            this.props.sendImage(
+              blob,
+              (snapshot) => {
+                let percentual = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                this.setState({ percentualUpload: percentual });
+              }, (imgName) => {
+                this.setState({ percentualUpload: 0 });
+                this.props.sendMessage('image', imgName, this.props.uid, this.props.activeChat);
+              });
           });
       }
     });
@@ -79,6 +101,11 @@ export class PrivateConversationScreen extends Component {
   render() {
     let areaBehavior = Platform.select({ ios: 'padding', android: null });
     let AreaOffset = Platform.select({ ios: '64', android: null });
+    const progressbar = this.state.percentualUpload > 0 &&
+      <View style={{ height: 10 }}>
+        <View style={[{ width: this.state.percentualUpload + '%' }, styles.percentualUpload]}></View>
+      </View>
+
     return (
       <KeyboardAvoidingView style={styles.container} behavior={areaBehavior} keyboardVerticalOffset={AreaOffset}>
         <FlatList
@@ -87,8 +114,9 @@ export class PrivateConversationScreen extends Component {
           onLayout={() => this.chatArea.scrollToEnd({ animated: true })}
           style={styles.chatArea}
           data={this.props.activeChatMessages}
-          renderItem={({ item }) => <MessageItem data={item} me={this.props.uid} />}
+          renderItem={({ item }) => <MessageItem data={item} me={this.props.uid} onImagePress={this.handleImagePress} />}
         />
+        {progressbar}
         <View style={styles.sendArea}>
           <TouchableHighlight style={styles.sendButtonImage} onPress={this.chooseImage}>
             <Image style={styles.sendImage} source={require('../../assets/images/new_image.png')} />
@@ -98,6 +126,11 @@ export class PrivateConversationScreen extends Component {
             <Image style={styles.sendImage} source={require('../../assets/images/send.png')} />
           </TouchableHighlight>
         </View>
+        <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
+          <TouchableHighlight style={styles.modalView} onPress={this.handleModalShow}>
+            <Image resizeMode="contain" style={styles.modalImage} source={{ uri: this.state.modalImage }} />
+          </TouchableHighlight>
+        </Modal>
       </KeyboardAvoidingView>
     );
   }
@@ -144,6 +177,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  percentualUpload: {
+    height: 10,
+    backgroundColor: '#00BFFF',
+  },
+  modalView: {
+    backgroundColor: "#000000",
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalImage: {
+    width: '100%',
+    height: '100%'
+
+  }
+
 });
 
 const mapStateToProps = (state) => {

@@ -15,7 +15,20 @@ export class ContactsListScreen extends Component {
   }
 
   handleClickContact = (item) => {
-    this.props.createChat(this.props.uid, item.key);
+  	let found = false;
+
+		for(var i in this.props.chats) {
+			if(this.props.chats[i].other == item.key) {
+				found = true;
+			}
+		}
+
+		if(found == false) {
+			this.props.createChat( this.props.uid, item.key );
+			this.props.navigation.navigate('ConversationsList');
+		} else {
+			alert("Já existe um CHAT com este usuário...");
+		}
 
   }
 
@@ -47,6 +60,7 @@ const mapStateToProps = (state) => {
   return {
     uid: state.auth.uid,
     contacts: state.chat.contacts,
+    chats: state.chat.chats
   };
 };
 

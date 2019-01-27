@@ -38,7 +38,9 @@ const AppNavigator = createStackNavigator({
     screen: SignInScreen
   },
 }, {
-    initialRouteName: 'Preload'
+    initialRouteName: 'Preload',
+    defaultNavigationOptions: {
+    }
   });
 
 const AppContainer = createAppContainer(AppNavigator);

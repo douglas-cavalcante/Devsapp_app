@@ -22,6 +22,8 @@ const AuthReducer = (state = initialState, action) => {
       return { ...state, password: action.payload.password }
     case 'changeUid':
       return { ...state, status: 1, uid: action.payload.uid }
+    case 'resetState':
+      return { name: '', email: '', password: '', status: 2, uid: '' }
     default:
       return state;
   }
