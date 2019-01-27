@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { View, Modal, StyleSheet, ActivityIndicator } from 'react-native';
 
 export default class LoadingItem extends Component {
@@ -14,7 +14,7 @@ export default class LoadingItem extends Component {
             <ActivityIndicator size="large" />
         </View>
       </Modal>
-    )
+    );
   }
 }
 
@@ -30,4 +30,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     opacity: 0.5
   }
-})
+});

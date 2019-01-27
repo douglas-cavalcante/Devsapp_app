@@ -1,7 +1,11 @@
 
-// 0 - 1º verificação
-// 1 - Logado
-// 2 - Não logado
+/* 
+-status
+ 0 - Valor inicial
+ 1 - Logado
+ 2 - Não logado
+*/
+
 const initialState = {
   name: '',
   email: '',

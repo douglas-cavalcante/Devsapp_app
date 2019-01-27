@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, Keyboard } from 'react-native';
+
 import { connect } from 'react-redux';
 import { changeEmail, changePassword, signIn } from '../actions/AuthActions';
+
 import LoadingItem from '../components/LoadingItem';
 
 export class SignInScreen extends Component {
@@ -37,7 +39,9 @@ export class SignInScreen extends Component {
         <TextInput style={styles.input} value={email} onChangeText={changeEmail} />
         <Text>Digite sua senha:</Text>
         <TextInput secureTextEntry={true} style={styles.input} value={password} onChangeText={changePassword} />
-        <Button title="Entrar" onPress={this.handleOnPress} />
+        <View style={styles.sigInButton} >
+          <Button title="Entrar" onPress={this.handleOnPress} />
+        </View>
         <LoadingItem visible={this.state.loading} />
       </View>
     );
@@ -47,7 +51,6 @@ export class SignInScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     margin: 10,
   },
@@ -57,6 +60,9 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     backgroundColor: '#DDDDDD'
+  },
+  sigInButton: {
+    marginTop: 10,
   }
 });
 

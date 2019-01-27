@@ -1,6 +1,5 @@
 import firebase from 'firebase';
-// Initialize Firebase
-var config = {
+const config = {
   apiKey: 'AIzaSyByM0AWOjMADbSpALAK_WRWV2pHrDSVuYU',
   authDomain: 'devsapp-be58c.firebaseapp.com',
   databaseURL: 'https://devsapp-be58c.firebaseio.com',

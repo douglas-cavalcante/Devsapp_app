@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, Keyboard } from 'react-native';
+
 import { connect } from 'react-redux';
 import { changeName, changeEmail, changePassword, signUp } from '../actions/AuthActions';
+
 import LoadingItem from '../components/LoadingItem';
 
 export class SignUpScreen extends Component {
@@ -19,14 +21,13 @@ export class SignUpScreen extends Component {
 
   componentDidUpdate() {
     if (this.props.status == 1) {
-      //Redireciona o usuário para o cadastro quando o status se torna 1 
       Keyboard.dismiss();
       this.props.navigation.navigate('Conversations');
     }
   }
 
   handleOnPress = () => {
-    const { name, email, password} = this.props;
+    const { name, email, password } = this.props;
     this.setState({ loading: true });
     this.props.signUp(name, email, password, () => this.setState({ loading: false }));
   }
@@ -41,7 +42,9 @@ export class SignUpScreen extends Component {
         <TextInput style={styles.input} value={email} onChangeText={changeEmail} />
         <Text>Digite sua senha:</Text>
         <TextInput secureTextEntry={true} style={styles.input} value={password} onChangeText={changePassword} />
-        <Button title="Cadastrar" onPress={this.handleOnPress} />
+        <View style={styles.addButton} >
+          <Button title="Cadastrar" onPress={this.handleOnPress} />
+        </View>
         <LoadingItem visible={this.state.loading} />
       </View>
     );
@@ -51,16 +54,18 @@ export class SignUpScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     margin: 10,
+    alignItems: 'center'
   },
   input: {
     width: '80%',
-    fontSize: 23,
+    fontSize: 18,
     height: 50,
     padding: 10,
-    backgroundColor: '#DDDDDD'
+    backgroundColor: '#DDDDDD',
+  },
+  addButton: {
+    marginTop: 10,
   }
 });
 

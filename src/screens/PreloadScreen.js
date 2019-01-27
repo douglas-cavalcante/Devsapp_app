@@ -15,41 +15,36 @@ export class PreloadScreen extends Component {
     super(props);
     this.state = {};
     this.props.checkLogin();
-    window.globalNavigator = this.props.navigation;
-    
   }
 
-  redirectPages = () => {
+  handleRedirectScreen = (routeName) => {
     switch (this.props.status) {
       case 1:
-        this.props.navigation.dispatch(StackActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'Conversations', }),
-          ]
-        }));
+        this.handleDispatch(routeName);
         break;
       case 2:
-        this.props.navigation.dispatch(StackActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'Home', }),
-          ]
-        }));
+        this.handleDispatch(routeName);
         break;
       default:
         break;
     }
+  }
 
+  handleDispatch = (routeName) => {
+    this.props.navigation.dispatch(StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName }),
+      ]
+    }));
   }
 
   componentDidMount() {
-    this.redirectPages();
+    this.handleRedirectScreen('Conversations');
   }
 
-  //Depois que atualiza o render 
   componentDidUpdate() {
-    this.redirectPages();
+    this.handleRedirectScreen('Home');
   }
 
   render() {
@@ -64,11 +59,10 @@ export class PreloadScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
     justifyContent: 'center',
     alignItems: 'center'
   },
-  loadingText:{
+  loadingText: {
     fontSize: 26,
     fontWeight: 'bold',
   }
@@ -77,7 +71,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     status: state.auth.status,
-    email: state.auth.email
   };
 };
 

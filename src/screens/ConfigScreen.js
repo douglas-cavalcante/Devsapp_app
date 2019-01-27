@@ -4,7 +4,6 @@ import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { signOut } from "../actions/AuthActions";
 import { resetInfo } from "../actions/ChatActions";
-import NavigationService from '../screens/NavigationService';
 
 export class ConfigScreen extends Component {
 

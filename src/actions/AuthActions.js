@@ -1,20 +1,13 @@
 import firebase from "../firebaseConnection";
 
-export const signOut = () => {
-  firebase.auth().signOut();
-  return {
-    type: 'resetState',
-    payload: {
-      status: 2,
-    }
-  }
-}
-
-
+/*
+@checkLogin
+Verificar se existe um usuário logado.Caso exista, atualiza o uid e consequentemente o usuário é redirecionado pra parte de conversas.
+*/
 export const checkLogin = () => {
   return (dispatch) => {
-    //Vai esperar o resultado
     firebase.auth().onAuthStateChanged((user) => {
+      console.log("recebi o usuário" + user)
       if (user) {
         dispatch({
           type: 'changeUid',
@@ -34,11 +27,14 @@ export const checkLogin = () => {
   }
 }
 
+/*
+@signUp
+Cria um novo usuário e seta o status para 1
+*/
 export const signUp = (name, email, password, callback) => {
   return (dispatch) => {
-  
     firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then((user) => {
+      .then((_user) => {
         let uid = firebase.auth().currentUser.uid;
         callback();
         firebase.database().ref('users').child(uid).set({
@@ -60,12 +56,13 @@ export const signUp = (name, email, password, callback) => {
             alert("Email inválido");
             break;
           case 'auth/operation-not-allowed':
-            alert("Email já em uso");
+            alert("Tente novamente mais tarde");
             break;
           case 'auth/weak-password':
             alert("Digite uma senha melhor");
             break;
           default:
+            alert("No momento não é possível realizar essa operação");
             break;
         }
         callback();
@@ -73,10 +70,22 @@ export const signUp = (name, email, password, callback) => {
   }
 }
 
+
+export const signOut = () => {
+  firebase.auth().signOut();
+  return {
+    type: 'resetState',
+    payload: {
+      status: 2,
+    }
+  }
+}
+
+
 export const signIn = (email, password, callback) => {
   return (dispatch) => {
     firebase.auth().signInWithEmailAndPassword(email, password)
-      .then((user) => {
+      .then((_user) => {
         let uid = firebase.auth().currentUser.uid;
         callback();
         dispatch({
@@ -101,7 +110,7 @@ export const signIn = (email, password, callback) => {
             alert('Email e/ou senha errados!!!');
             break;
           default:
-          alert(error.code)
+            alert(error.code)
             break;
         }
         callback();

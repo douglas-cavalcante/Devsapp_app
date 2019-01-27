@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
-import NavigationService from './src/screens/NavigationService';
-
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
@@ -17,7 +15,6 @@ import SignInScreen from './src/screens/SignInScreen';
 //Criação da store - recebe os reducers e o middleware
 let store = createStore(Reducers, applyMiddleware(ReduxThunk));
 
-//Criação da navegação inicial
 const AppNavigator = createStackNavigator({
   Conversations: {
     screen: ConversationsScreen,
@@ -39,8 +36,6 @@ const AppNavigator = createStackNavigator({
   },
 }, {
     initialRouteName: 'Preload',
-    defaultNavigationOptions: {
-    }
   });
 
 const AppContainer = createAppContainer(AppNavigator);
@@ -49,12 +44,8 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <AppContainer
-          ref={navigatorRef => {
-            NavigationService.setTopLevelNavigator(navigatorRef);
-          }}
-        />
+        <AppContainer />
       </Provider>
-    )
+    );
   }
 }
