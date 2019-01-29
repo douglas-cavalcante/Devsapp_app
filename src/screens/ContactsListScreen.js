@@ -11,25 +11,23 @@ export class ContactsListScreen extends Component {
     this.state = {
       loading: true,
     };
-
   }
 
-  handleClickContact = (item) => {
-  	let found = false;
-
-		for(var i in this.props.chats) {
-			if(this.props.chats[i].other == item.key) {
-				found = true;
-			}
-		}
-
-		if(found == false) {
-			this.props.createChat( this.props.uid, item.key );
-			this.props.navigation.navigate('ConversationsList');
-		} else {
-			alert("Já existe um CHAT com este usuário...");
-		}
-
+  handleClickContact = async (item) => {
+    let found = false;
+    for (let i in this.props.chats) {
+      if (this.props.chats[i].other == item.key) {
+        found = true;
+        console.log("entrei")
+      }
+    }
+    if (found == false) {
+      console.log(item.key)
+      await this.props.createChat(this.props.uid, item.key);
+      this.props.navigation.navigate('ConversationsList');
+    } else {
+      alert("Já existe um CHAT com este usuário...");
+    }
   }
 
   componentDidMount() {
@@ -37,13 +35,12 @@ export class ContactsListScreen extends Component {
   }
 
   render() {
-
     return (
       <View style={styles.container}>
         {this.state.loading && <ActivityIndicator size="large" />}
         <FlatList
           data={this.props.contacts}
-          renderItem={({ item }) => { return <ContactItem data={item} onPress={this.handleClickContact} /> }}
+          renderItem={({ item }) => <ContactItem data={item} onPress={this.handleClickContact} />}
         />
       </View>
     );

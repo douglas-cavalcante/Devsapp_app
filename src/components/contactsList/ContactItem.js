@@ -15,11 +15,11 @@ export default class ContactItem extends Component {
 
   render() {
     return (
-      <View>
+     
         <TouchableHighlight underlayColor="#CCCCCC" style={styles.buttonArea} onPress={this.handleClickArea}>
           <Text>{this.props.data.name}</Text>
         </TouchableHighlight>
-      </View>
+    
     )
   }
 }

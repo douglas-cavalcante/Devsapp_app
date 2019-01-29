@@ -15,7 +15,6 @@ export class ConfigScreen extends Component {
   logout = async () => {
     await this.props.resetInfo();
     await this.props.signOut();
-    // Como manter o comportamente
     this.props.navigation.dispatch(StackActions.reset({
       index: 0,
       key: null,
@@ -23,33 +22,35 @@ export class ConfigScreen extends Component {
         NavigationActions.navigate({ routeName: 'Home' }),
       ]
     }));
-
   }
-
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Configurações</Text>
+        <Text style={styles.textConfig}>Configurações</Text>
         <Button title="Sair" onPress={this.logout} />
       </View>
     );
   }
 }
 
-
-const styles = StyleSheet.create({
-  container: {
-    margin: 50,
-  }
-});
-
 const mapStateToProps = (state) => {
   return {
-    status: state.auth.status,
-    uid: state.auth.uid
-  }
+  };
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    margin: 50,
+    alignItems: 'center',
+  },
+  textConfig: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 15,
+
+  }
+});
 
 const ConfigConnect = connect(mapStateToProps, { signOut, resetInfo })(ConfigScreen);
 export default ConfigConnect;

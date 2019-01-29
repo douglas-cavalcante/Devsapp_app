@@ -1,5 +1,47 @@
 import firebase from "../firebaseConnection";
 
+export const createChat = (userSender, userRecipient) => {
+  return (dispatch) => {
+    //Criando o chat
+    const newChat = firebase.database().ref('chats').push();
+
+    newChat.child('members').child(userSender).set({
+      id: userSender,
+    });
+    newChat.child('members').child(userRecipient).set({
+      id: userRecipient,
+    });
+
+    //Associando aos envolvidos
+    let chatId = newChat.key;
+
+    //criando referencia e recuperando o nome do user
+    firebase.database().ref('users').child(userRecipient).once('value').then((snapshot) => {
+      firebase.database().ref('users').child(userSender).child('chats').child(chatId).set({
+        id: chatId,
+        title: snapshot.val().name,
+        other: userRecipient,
+      });
+    }).then(() => {
+      firebase.database().ref('users').child(userSender).once('value').then((snapshot) => {
+        firebase.database().ref('users').child(userRecipient).child('chats').child(chatId).set({
+          id: chatId,
+          title: snapshot.val().name,
+          other: userSender
+        })
+          .then(() => {
+            dispatch({
+              type: 'setActiveChat',
+              payload: {
+                chatId: chatId
+              }
+            });
+          });
+      });
+    });
+  }
+}
+
 export const getContactsList = (userUid, callback) => {
   return (dispatch) => {
     firebase.database().ref('users').orderByChild('name').once('value').then((snapshot) => {
@@ -23,44 +65,10 @@ export const getContactsList = (userUid, callback) => {
   }
 }
 
-
-export const resetInfo = () => {
-  return (dispatch) => {
-    dispatch({
-      type: 'resetInfo',
-      payload: {
-      }
-    });
-  }
-}
-
-
-export const sendImage = (blob, progressCallback, sucessCallback) => {
-  return (_dispatch) => {
-    let tmpKey = firebase.database().ref('chats').push().key;
-    let fbImage = firebase.storage().ref().child('images').child(tmpKey);
-    fbImage.put(blob, { contentType: 'image/jpeg' })
-      .on(
-        'state_changed',
-        progressCallback,
-        (error) => {
-          alert(error.code);
-        },
-        () => {
-          fbImage.getDownloadURL().then((url) => {
-            sucessCallback(url);
-          });
-        }
-      )
-  }
-}
-
-
 export const getChatsList = (userUid, callback) => {
   return (dispatch) => {
     firebase.database().ref('users').child(userUid).child('chats').on('value', (snapshot) => {
       let chats = [];
-
       snapshot.forEach((childItem) => {
         chats.push({
           key: childItem.key,
@@ -79,52 +87,22 @@ export const getChatsList = (userUid, callback) => {
   };
 };
 
-export const createChat = (userSender, userRecipient) => {
-  return (dispatch) => {
-    //Criando o chat
-    const newChat = firebase.database().ref('chats').push();
-    newChat.child('members').child(userSender).set({
-      id: userSender,
-    });
-    newChat.child('members').child(userRecipient).set({
-      id: userRecipient,
-    });
-    //Associando aos envolvidos
-    let chatId = newChat.key;
-
-    //criando referencia e recuperando o nome do user
-    firebase.database().ref('users').child(userRecipient).once('value').then((snapshot) => {
-      firebase.database().ref('users').child(userSender).child('chats').child(chatId).set({
-        id: chatId,
-        title: snapshot.val().name,
-        other: userRecipient,
-      });
-    });
-
-    firebase.database().ref('users').child(userSender).once('value').then((snapshot) => {
-      firebase.database().ref('users').child(userRecipient).child('chats').child(chatId).set({
-        id: chatId,
-        title: snapshot.val().name,
-        other: userSender
-      })
-        .then(() => {
-          dispatch({
-            type: 'setActiveChat',
-            payload: {
-              chatId: chatId
-            }
-          });
-        })
-    });
-  }
-}
-
 export const setActiveChat = (chatId) => {
   return {
     type: 'setActiveChat',
     payload: {
-      chatId: chatId
-    }
+      chatId: chatId,
+    },
+  }
+}
+
+export const resetInfo = () => {
+  return (dispatch) => {
+    dispatch({
+      type: 'resetState',
+      payload: {
+      },
+    });
   }
 }
 
@@ -159,9 +137,29 @@ export const sendMessage = (messageType, messageContent, author, activeChat) => 
   }
 }
 
+export const sendImage = (blob, progressCallback, sucessCallback) => {
+  return (_dispatch) => {
+    let tmpKey = firebase.database().ref('chats').push().key;
+    let fbImage = firebase.storage().ref().child('images').child(tmpKey);
+    fbImage.put(blob, { contentType: 'image/jpeg' })
+      .on(
+        'state_changed',
+        progressCallback,
+        (error) => {
+          alert(error.code);
+        },
+        () => {
+          fbImage.getDownloadURL().then((url) => {
+            sucessCallback(url);
+          });
+        }
+      )
+  }
+}
+
 export const monitorChat = (activeChat) => {
   return (dispatch) => {
-    firebase.database().ref('chats').child(activeChat).child('messages').on('value', (snapshot) => {
+    firebase.database().ref('chats').child(activeChat).child('messages').orderByChild('date').on('value', (snapshot) => {
       let Msgs = [];
       snapshot.forEach((childItem) => {
         switch (childItem.val().messageType) {
@@ -199,7 +197,7 @@ export const monitorChat = (activeChat) => {
 }
 
 export const monitorChatOff = (activeChat) => {
-  return (dispatch) => {
+  return (_dispatch) => {
     firebase.database().ref('chats').child(activeChat).child('messages').off();
   };
 };

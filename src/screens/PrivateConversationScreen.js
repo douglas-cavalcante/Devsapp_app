@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Modal, View, Button, StyleSheet, TextInput, Platform, KeyboardAvoidingView, TouchableHighlight, FlatList, Image, BackHandler } from 'react-native';
+import { Modal, View, StyleSheet, TextInput, Platform, KeyboardAvoidingView, TouchableHighlight, FlatList, Image, BackHandler } from 'react-native';
+
 import { connect } from 'react-redux';
 import { setActiveChat, sendMessage, monitorChat, monitorChatOff, sendImage } from '../actions/ChatActions';
-import MessageItem from '../components/privateConversation/MessageItem';
+
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
 
+import MessageItem from '../components/privateConversation/MessageItem';
 
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = RNFetchBlob.polyfill.Blob;
@@ -99,6 +101,7 @@ export class PrivateConversationScreen extends Component {
   }
 
   render() {
+
     let areaBehavior = Platform.select({ ios: 'padding', android: null });
     let AreaOffset = Platform.select({ ios: '64', android: null });
     const progressbar = this.state.percentualUpload > 0 &&
@@ -118,19 +121,21 @@ export class PrivateConversationScreen extends Component {
         />
         {progressbar}
         <View style={styles.sendArea}>
-          <TouchableHighlight style={styles.sendButtonImage} onPress={this.chooseImage}>
+          <TouchableHighlight style={styles.sendButtonImage} onPress={this.chooseImage} underlayColor="white">
             <Image style={styles.sendImage} source={require('../../assets/images/new_image.png')} />
           </TouchableHighlight>
           <TextInput style={styles.sendInput} value={this.state.message} onChangeText={(message) => this.setState({ message })} />
-          <TouchableHighlight style={styles.sendButton} onPress={this.sendMessage}>
+          <TouchableHighlight style={styles.sendButton} onPress={this.sendMessage} underlayColor="white" >
             <Image style={styles.sendImage} source={require('../../assets/images/send.png')} />
           </TouchableHighlight>
         </View>
-        <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
-          <TouchableHighlight style={styles.modalView} onPress={this.handleModalShow}>
+
+        <Modal animationType="slide" transparent={false} visible={this.state.modalVisible} onRequestClose={() => { }}>
+          <TouchableHighlight style={styles.modalView} onPress={this.handleModalShow} underlayColor="white" >
             <Image resizeMode="contain" style={styles.modalImage} source={{ uri: this.state.modalImage }} />
           </TouchableHighlight>
         </Modal>
+
       </KeyboardAvoidingView>
     );
   }
@@ -141,7 +146,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   iconBack: {
-    width: 25,
+    width: 35,
     height: 35,
     marginLeft: 25
   },
@@ -153,12 +158,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEEEEE",
     height: 50,
     flexDirection: 'row',
-    padding: 10
-
   },
   sendInput: {
     height: 50,
-    borderBottomWidth: 1,
     flex: 1
   },
   sendButton: {
@@ -190,9 +192,7 @@ const styles = StyleSheet.create({
   modalImage: {
     width: '100%',
     height: '100%'
-
   }
-
 });
 
 const mapStateToProps = (state) => {

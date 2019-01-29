@@ -7,11 +7,9 @@ export default class ConversationsItem extends Component {
     super(props);
   }
 
-
   handleClickArea = () => {
     this.props.onPress(this.props.data);
   }
-
 
   render() {
     return (

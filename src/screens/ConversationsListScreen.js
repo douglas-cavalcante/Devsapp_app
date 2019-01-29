@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { getChatsList, setActiveChat } from '../actions/ChatActions';
 import ConversationsItem from '../components/conversationsList/ConversationsItem';
@@ -11,20 +11,24 @@ export class ConversationsListScreen extends Component {
     this.state = {
       loading: true,
     };
+   
   }
 
   componentDidUpdate() {
+    this.props.getChatsList(this.props.uid,() => {});
     if (this.props.activeChat != '') {
-      this.props.navigation.navigate('PrivateConversation', { title: this.props.activeChatTitle });
+      console.log(this.props.activeChatTitle)
+      //this.props.navigation.navigate('PrivateConversation', { title: this.props.activeChatTitle });
     }
-  }
-
-  componentDidMount() {
-    this.props.getChatsList(this.props.uid, () => this.setState({ loading: false }));
   }
 
   handleClickConversation = (data) => {
     this.props.setActiveChat(data.key);
+  }
+
+
+  componentWillMount(){
+    this.props.getChatsList(this.props.uid, () => this.setState({ loading: false }));
   }
 
   render() {
@@ -33,7 +37,7 @@ export class ConversationsListScreen extends Component {
         {this.state.loading && <ActivityIndicator size="large" />}
         <FlatList
           data={this.props.chats}
-          renderItem={({ item }) => { return <ConversationsItem data={item} onPress={this.handleClickConversation} /> }}
+          renderItem={({ item }) =>  <ConversationsItem data={item} onPress={this.handleClickConversation} /> }
         />
       </View>
     );
@@ -48,14 +52,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    status: state.auth.status,
     uid: state.auth.uid,
-    activeChat: state.chat.activeChat,
     chats: state.chat.chats,
+    activeChat: state.chat.activeChat,
     activeChatTitle: state.chat.activeChatTitle
   };
 };
-
 
 const ConversationsListConnect = connect(mapStateToProps, { getChatsList, setActiveChat })(ConversationsListScreen);
 export default ConversationsListConnect;

@@ -7,7 +7,7 @@ const ConversationsStackNavigator = createStackNavigator({
   ConversationsList: {
     screen: ConversationsListScreen,
     navigationOptions: {
-      title: "conversas"
+      title: "Suas Conversas",
     }
   },
   PrivateConversation: {

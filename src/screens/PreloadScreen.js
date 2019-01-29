@@ -17,13 +17,14 @@ export class PreloadScreen extends Component {
     this.props.checkLogin();
   }
 
-  handleRedirectScreen = (routeName) => {
+
+  handleRedirectScreen = () => {
     switch (this.props.status) {
       case 1:
-        this.handleDispatch(routeName);
+        this.handleDispatch('Conversations');
         break;
       case 2:
-        this.handleDispatch(routeName);
+        this.handleDispatch('Home');
         break;
       default:
         break;
@@ -40,11 +41,11 @@ export class PreloadScreen extends Component {
   }
 
   componentDidMount() {
-    this.handleRedirectScreen('Conversations');
+    this.handleRedirectScreen();
   }
 
   componentDidUpdate() {
-    this.handleRedirectScreen('Home');
+    this.handleRedirectScreen();
   }
 
   render() {

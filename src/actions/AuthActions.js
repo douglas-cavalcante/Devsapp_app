@@ -7,7 +7,6 @@ Verificar se existe um usuário logado.Caso exista, atualiza o uid e consequente
 export const checkLogin = () => {
   return (dispatch) => {
     firebase.auth().onAuthStateChanged((user) => {
-      console.log("recebi o usuário" + user)
       if (user) {
         dispatch({
           type: 'changeUid',
